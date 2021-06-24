@@ -3,7 +3,7 @@
 #include <sstream>
 #include <time.h>
 #include <cstdlib>
-#include <string>
+#include <cstring>
 #include  <thread>
 
 using namespace std;
@@ -302,11 +302,11 @@ int main()
 	srand(time(NULL));
 	bool quitGame = false;
 	int input1 = 0, input2 = 0, input3 = 0;
-	
 	string name;
 	int str = 0 , agil = 0 , intel = 0, maxHp = 0, dodge = 0, baseDmg= 0 , resist = 0;
 	ArenaManager colosseum(10);
 
+	
 	//Intro to player
 	cout << "******************************\n"
 		 << "Welcome to World of FightCraft.\n"
@@ -329,7 +329,7 @@ int main()
 		//Ask for player input 
 		while (input1 < 1 || input1 > 5)
 		{
-			cout << "Select an option form 1-5 :";
+			cout << "Select an option form 1-5 : ";
 			cin >> input1;
 		}
 		
@@ -346,18 +346,21 @@ int main()
 
 			while (input2 < 1 || input2 > 3)
 			{
-				cout << "Select an option form 1-3 :";
+				cout << "Select an option form 1-3 : ";
 				cin >> input2;
+			
 			}
-			cout << "What shall this Contestant be named :";
-			cin >> name;
-			//getline(cin, name);
-			cout << name << ", a name for a worth challenger!\n"
-				 << "Would you like to \n1) Randomize \n2) Enter the contestants stats";
+			cin.clear();
+			cout << "What shall this Contestant be named : ";
+			/*cin >> name;*/
+			getline(cin, name);
+			cin.clear();
+			cout << name << ", a name for a worth challenger!\n\n"
+				 << "Would you like to \n1) Randomize stats\n2) Enter the contestants stats\n";
 			
 			while (input3 < 1 || input3 > 2)
 			{
-				cout << "Select an option form 1-2 :";
+				cout << "Select an option form 1-2 : ";
 				cin >> input3;
 			}
 			cout << "******************************\n";
@@ -367,30 +370,31 @@ int main()
 			
 				while(str < 1 || str > 20)
 				{
-					cout << "Strength 1-20 :";
-					cin >> str;
+					cout << "Strength 1-20 : ";
+					cin  >> str;
 				}
 				while (agil < 1 || agil > 20)
 				{
-					cout << "Agility 1-20 :";
-					cin >> agil;
+					cout << "Agility 1-20 : ";
+					cin  >> agil;
 				}
 				while (intel < 1 || intel > 20)
 				{
-					cout << "Intelligence 1-20 :";
-					cin >> intel;
+					cout << "Intelligence 1-20 : ";
+					cin  >> intel;
 				}
 				while (dodge < 1 || dodge > 50)
 				{
-					cout << "Dodge Chance 1-50 :";
-					cin >> dodge;
+					cout << "Dodge Chance 1-50 : ";
+					cin  >> dodge;
 				}
-				cout << "Maximum HitPoints :";
+				cout << "Maximum HitPoints : ";
 				cin  >> maxHp;
-				cout << "Base Damage :";
+				cout << "Base Damage : ";
+				cin  >> baseDmg;
 				if (input3 == 1)
 				{
-					cout << "Resistance 0-50:";
+					cout << "Resistance 0-50 : ";
 					cin >> resist;
 				}
 			
@@ -398,7 +402,19 @@ int main()
 			//Contestant Random stats 
 			else
 			{
-				
+				str = 1 + rand() % 19;
+				agil = 1 + rand() % 19;
+				intel = 1 + rand() % 19;
+				dodge = 1 + rand() % 49;
+				baseDmg = 1 + rand() % 49;
+				resist = 1 + rand() % 49;
+				maxHp = 150 + rand() % 350;
+				cout << "Strength 1-20 : " << str << endl << "Agility 1-20 : " << agil << endl << "Intelligence 1-20 : " << intel << endl
+					 << "Dodge chance 1-50 : " << dodge << endl << "Base Damage 1-50 : " << baseDmg << endl << "Maximim HealthPoints 150-500 : " << maxHp << endl;
+				if(input3 == 1)
+				{
+					cout << "Resistance 1-50 : " << resist << endl;
+				}
 			}
 			cout << "******************************\n\n";
 		
