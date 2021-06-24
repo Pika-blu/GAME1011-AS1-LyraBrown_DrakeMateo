@@ -1,3 +1,4 @@
+//Game 1011 Assignment 1 by Lyra Brown 101196703 and Drake Mateo 101123004
 #include <iostream>
 #include <sstream>
 #include <time.h>
@@ -236,7 +237,44 @@ public:
 
 class ArenaManager
 {
+private:
+	BaseCharacter* contestantList;
+	int maxContestants;
+	int numContestants;
+
+public:
 	
+	ArenaManager( int maxContestants)
+	{
+		this->maxContestants = maxContestants;
+	}
+	
+	//For Priest or Mage
+	bool addContestant(char type, string name, int str, int agl, int intel, int maxHP, int dodge, int baseDamage)
+	{
+		
+	}
+
+	//For Warrior
+	bool addConestant(string name, int str, int agl, int intel, int maxHP, int dodge, int baseDamage, int resist)
+	{
+
+	}
+
+	BaseCharacter viewContestant(int arrayIndex)
+	{
+
+	}
+
+	void simulateChallenge(int contestant1Index, int contestant2Index)
+	{
+
+	}
+
+	string viewAllContestants()
+	{
+		
+	}
 };
 
 
@@ -251,21 +289,32 @@ int main()
 	//Seed and variables needed for main
 	srand(time(NULL));
 	bool quitGame = false;
-	int input = 0; 
+	int input = 0;
+	ArenaManager colosseum(10);
+	
 	//Intro to player
-	cout << "******************************\n";
-	cout << "Welcome to World of FightCraft.\n"
-		 <<"A world rich with unused lore and a crafting system we forget to maintain over many expansions...\n"
-	     <<"Wanna fight something!?\n";
-	cout << "******************************\n";
+	cout << "******************************\n"
+		 << "Welcome to World of FightCraft.\n"
+		 << "A world rich with unused lore and a crafting system we forget to maintain over many expansions...\n"
+	     << "Wanna fight something!?\n"
+		 << "******************************\n\n";
 
 	//Run Menu
 	while(!quitGame)
 	{
+		//Display Menu
+		cout << "******************************\n"
+			 << "1) Add Contestant\n"
+			 << "2) View Specific Contestant\n"
+			 << "3) View All Contestants\n"
+			 << "4) Run Combat Challenge\n"
+			 << "5) Exit\n"
+			 << "******************************\n\n";
+		
 		//Ask for player input 
-		while (input < 1 || input > 6)
+		while (input < 1 || input > 5)
 		{
-			cout << "Select an option form 1-6 :";
+			cout << "Select an option form 1-5 :";
 			cin >> input;
 		}
 		
