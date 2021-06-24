@@ -265,6 +265,7 @@ int main()
 		//Ask for player input 
 		while (input < 1 || input > 6)
 		{
+			cout << "Select an option form 1-6 :";
 			cin >> input;
 		}
 		
