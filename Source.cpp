@@ -245,14 +245,15 @@ class ArenaManager
 private:
 	BaseCharacter** contestantList;
 	int maxContestants;
-	int numContestants;
+	int numContestants = 0;
 
 public:
 	
+	int getNumContestants() { return numContestants; }
+	int getMaxContestants() { return maxContestants; }
 	ArenaManager( int maxContestants)
 	{
 		this->maxContestants = maxContestants;
-		numContestants = 0;
 		contestantList = new BaseCharacter * [maxContestants];
 	}
 	
@@ -265,23 +266,20 @@ public:
 			{
 				Mage* newMage = new Mage(name, str, agl, intel, maxHP, dodge, baseDamage);
 				contestantList[numContestants] = newMage;
-				numContestants++;
-				return true;
 			}
 			else if(type == 'P')
 			{
 				Priest* newPriest = new Priest(name, str, agl, intel, maxHP, dodge, baseDamage);
-				contestantList[numContestants] = newPriest;
-				numContestants++;
-				return true;
+				contestantList[numContestants] = newPriest;	
 			}
 			numContestants++;
-			return 1;
+			return true;
 		}
 		else
 		{
-			return 0;
+			return false;
 		}
+		
 	}
 	//For Warrior
 	bool addConestant(string name, int str, int agl, int intel, int maxHP, int dodge, int baseDamage, int resist)
@@ -291,23 +289,31 @@ public:
 			Warrior* newWarrior = new Warrior(name, str, agl, intel, maxHP, dodge, baseDamage, resist);
 			contestantList[numContestants] = newWarrior;
 			numContestants++;
+			
 			return true;
 		}
 		else
 		{
 			return false;
 		}
+	
 	}
 
-	BaseCharacter viewContestant(int arrayIndex)
-	
-
+	BaseCharacter* viewContestant(int arrayIndex)
 	{
 		cout << contestantList[arrayIndex]->toString();
+		return contestantList[arrayIndex];
 	}
+
 	string viewAllContestants()
 	{
-		
+		stringstream s;
+		for (int i = 0; i < numContestants; i++)
+		{
+			s << i+1 << ")" << contestantList[i]->getName() << ". Present Hp : " << contestantList[i]->getPresentHp() << endl  << endl;
+		}
+		cout << "in func\n";
+		return s.str();
 	}
 
 	void simulateChallenge(int contestant1Index, int contestant2Index)
@@ -317,134 +323,17 @@ public:
 };
 
 
-
-
-
-
-void createContestant(ArenaManager object)
-{
-	int input1 = 0, input2 = 0, input3 = 0;
-	string name;
-	int str = 0, agil = 0, intel = 0, maxHp = 0, dodge = 0, baseDmg = 0, resist = 0;
-	bool success;
-	cout << "******************************\n"
-		<< "Select Contestant Class\n\n"
-		<< "1) Warrior\n"
-		<< "2) Mage\n"
-		<< "3) Priest\n"
-		<< "******************************\n\n";
-
-	while (input2 < 1 || input2 > 3)
-	{
-		cout << "Select an option form 1-3 : ";
-		cin >> input2;
-
-	}
-	
-	cout << "What shall this Contestant be named : ";
-
-	cin.get();
-	getline(cin, name);
-	cin.clear();
-
-	cout << name << ", a name for a worthy challenger!\n\n"
-		<< "Would you like to \n1) Randomize stats\n2) Enter the contestants stats\n";
-
-	while (input3 < 1 || input3 > 2)
-	{
-		cout << "Select an option form 1-2 : ";
-		cin >> input3;
-	}
-	cout << "******************************\n";
-	//Hard Code Contestant
-	if (input3 == 1)
-	{
-
-		while (str < 1 || str > 20)
-		{
-			cout << "Strength 1-20 : ";
-			cin >> str;
-		}
-		while (agil < 1 || agil > 20)
-		{
-			cout << "Agility 1-20 : ";
-			cin >> agil;
-		}
-		while (intel < 1 || intel > 20)
-		{
-			cout << "Intelligence 1-20 : ";
-			cin >> intel;
-		}
-		while (dodge < 1 || dodge > 50)
-		{
-			cout << "Dodge Chance 1-50 : ";
-			cin >> dodge;
-		}
-		cout << "Maximum HitPoints : ";
-		cin >> maxHp;
-		cout << "Base Damage : ";
-		cin >> baseDmg;
-		if (input3 == 1)
-		{
-			cout << "Resistance 0-50 : ";
-			cin >> resist;
-		}
-
-	}
-	//Contestant Random stats 
-	else
-	{
-		str     = 1 + rand() % 19;
-		agil    = 1 + rand() % 19;
-		intel   = 1 + rand() % 19;
-		dodge   = 1 + rand() % 49;
-		baseDmg = 1 + rand() % 49;
-		resist  = 1 + rand() % 49;
-		maxHp   = 150 + rand() % 350;
-		cout << "Strength 1-20 : " << str << endl << "Agility 1-20 : " << agil << endl << "Intelligence 1-20 : " << intel << endl
-			<< "Dodge chance 1-50 : " << dodge << endl << "Base Damage 1-50 : " << baseDmg << endl << "Maximim HealthPoints 150-500 : " << maxHp << endl;
-		if (input3 == 1)
-		{
-			cout << "Resistance 1-50 : " << resist << endl;
-		}
-	}
-	cout << "******************************\n\n";
-
-	//If warrior was chosen
-	if (input2 == 1)
-	{
-		success = object.addConestant(name, str, agil, intel, maxHp, dodge, baseDmg, resist);
-	}
-	//If Mage or Priest was chosen 
-	else if (input2 == 2 || input2 == 3)
-	{
-		if (input2 == 2)
-		{
-			success = object.addContestant('M', name, str, agil, intel, maxHp, dodge, baseDmg);
-		}
-		else if (input3 == 3)
-		{
-			success = object.addContestant('P', name, str, agil, intel, maxHp, dodge, baseDmg);
-		}
-	}
-	//Check for success build
-	if (success)
-	{
-		cout << "Contestant was successfully created!\n";
-	}
-	else
-	{
-		cout << "Contestant creation FAILED!\n";
-	}
-}
-
 int main()
 {
 	//Seed and variables needed for main
 	srand(time(NULL));
 	bool quitGame = false;
 	int input1 = 0, input2 = 0, input3 = 0;
+	string name;
+	int str = 0, agil = 0, intel = 0, maxHp = 0, dodge = 0, baseDmg = 0, resist = 0;
+	bool success = false;
 	int index;
+	string read;
 	ArenaManager colosseum(10);
 
 	
@@ -458,6 +347,8 @@ int main()
 	//Run Menu
 	while(!quitGame)
 	{
+		//cout << " Num of Contestants = " << colosseum.numContestants << endl;
+		//cout << " Max of Contestants = " << colosseum.maxContestants << endl;
 		//Display Menu
 		cout << "******************************\n"
 			 << "1) Add Contestant\n"
@@ -478,17 +369,135 @@ int main()
 		{
 		//Add Contestant
 		case 1:
-			createContestant(colosseum);
+			cout << "******************************\n"
+				<< "Select Contestant Class\n\n"
+				<< "1) Warrior\n"
+				<< "2) Mage\n"
+				<< "3) Priest\n"
+				<< "******************************\n\n";
+
+			while (input2 < 1 || input2 > 3)
+			{
+				cout << "Select an option form 1-3 : ";
+				cin >> input2;
+
+			}
+
+			cout << "What shall this Contestant be named : ";
+
+			cin.get();
+			getline(cin, name);
+			cin.clear();
+
+			cout << name << ", a name for a worthy challenger!\n\n"
+				<< "Would you like to \n1) Randomize stats\n2) Enter the contestants stats\n";
+
+			while (input3 < 1 || input3 > 2)
+			{
+				cout << "Select an option form 1-2 : ";
+				cin >> input3;
+			}
+			cout << "******************************\n";
+			//Hard Code Contestant
+			if (input3 == 2)
+			{
+
+				while (str < 1 || str > 20)
+				{
+					cout << "Strength 1-20 : ";
+					cin >> str;
+				}
+				while (agil < 1 || agil > 20)
+				{
+					cout << "Agility 1-20 : ";
+					cin >> agil;
+				}
+				while (intel < 1 || intel > 20)
+				{
+					cout << "Intelligence 1-20 : ";
+					cin >> intel;
+				}
+				while (dodge < 1 || dodge > 50)
+				{
+					cout << "Dodge Chance 1-50 : ";
+					cin >> dodge;
+				}
+				cout << "Maximum HitPoints : ";
+				cin >> maxHp;
+				cout << "Base Damage : ";
+				cin >> baseDmg;
+				if (input3 == 1)
+				{
+					cout << "Resistance 0-50 : ";
+					cin >> resist;
+				}
+
+			}
+			//Contestant Random stats 
+			else
+			{
+				str = 1 + rand() % 19;
+				agil = 1 + rand() % 19;
+				intel = 1 + rand() % 19;
+				dodge = 1 + rand() % 49;
+				baseDmg = 1 + rand() % 49;
+				resist = 1 + rand() % 49;
+				maxHp = 150 + rand() % 350;
+				cout << "Strength 1-20 : " << str << endl << "Agility 1-20 : " << agil << endl << "Intelligence 1-20 : " << intel << endl
+					<< "Dodge chance 1-50 : " << dodge << endl << "Base Damage 1-50 : " << baseDmg << endl << "Maximim HealthPoints 150-500 : " << maxHp << endl;
+				if (input3 == 1)
+				{
+					cout << "Resistance 1-50 : " << resist << endl;
+				}
+			}
+			cout << "******************************\n\n";
+
+			//If warrior was chosen
+			if (input2 == 1)
+			{
+				success = colosseum.addConestant(name, str, agil, intel, maxHp, dodge, baseDmg, resist);
+			}
+			//If Mage or Priest was chosen 
+			else if (input2 == 2 || input2 == 3)
+			{
+				if (input2 == 2)
+				{
+					success = colosseum.addContestant('M', name, str, agil, intel, maxHp, dodge, baseDmg);
+				}
+				else if (input3 == 3)
+				{
+					success = colosseum.addContestant('P', name, str, agil, intel, maxHp, dodge, baseDmg);
+				}
+			}
+			//Check for success build
+			if (success)
+			{
+				cout << "Contestant was successfully created!\n";
+			}
+			else
+			{
+				cout << "Contestant creation FAILED!\n";
+			}
 			break;
 		//View Specific Contestant
 		case 2:
 			cout << "******************************\n"
-				<< "Which Contestant would you like to view?\n";
-			/*colosseum.viewContestant(index);*/
+				<< "Select which Contestant would you like to view?\n";
+			cout << colosseum.viewAllContestants();
+			cout << "******************************\n";
+			while (input2 < 1 || input2 > colosseum.getNumContestants())
+			{
+				cin >> input2;
+			}
+			colosseum.viewContestant(input2-1);
+
 			break;
 		//View All Contestant
 		case 3:
-
+			cout << "******************************\n"
+				<< "List of created Contestants\n";
+			cout << colosseum.viewAllContestants();
+			cout << "******************************\n\n";
 			break;
 		//Run Combat Challenge
 		case 4:
@@ -503,6 +512,7 @@ int main()
 		
 		//reset variables and pause for next cycle
 		input1 = 0, input2 = 0, input3 = 0;
+		str = 0, agil = 0, intel = 0, maxHp = 0, dodge = 0, baseDmg = 0, resist = 0;
 		this_thread::sleep_for(1.5s);
 	}
 
