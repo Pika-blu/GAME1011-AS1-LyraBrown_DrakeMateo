@@ -3,6 +3,8 @@
 #include <sstream>
 #include <time.h>
 #include <cstdlib>
+#include <string>
+#include  <thread>
 
 using namespace std;
 
@@ -83,6 +85,7 @@ public:
 		s << "-------------------------------------" << "\n\n";
 		return s.str();
 	}
+
 
 	string getName() const { return name; }
 	int getMaxHP() const { return maxHp; }
@@ -247,6 +250,7 @@ public:
 	ArenaManager( int maxContestants)
 	{
 		this->maxContestants = maxContestants;
+		numContestants = 0;
 	}
 	
 	//For Priest or Mage
@@ -258,7 +262,15 @@ public:
 	//For Warrior
 	bool addConestant(string name, int str, int agl, int intel, int maxHP, int dodge, int baseDamage, int resist)
 	{
-
+		if(maxContestants > numContestants)
+		{
+			numContestants++;
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	BaseCharacter viewContestant(int arrayIndex)
@@ -289,9 +301,12 @@ int main()
 	//Seed and variables needed for main
 	srand(time(NULL));
 	bool quitGame = false;
-	int input = 0;
+	int input1 = 0;
+	int input2 = 0;
+	string name;
+	int str, agil, intel, maxHp, dodge, baseDmg, resist;
 	ArenaManager colosseum(10);
-	
+
 	//Intro to player
 	cout << "******************************\n"
 		 << "Welcome to World of FightCraft.\n"
@@ -312,24 +327,62 @@ int main()
 			 << "******************************\n\n";
 		
 		//Ask for player input 
-		while (input < 1 || input > 5)
+		while (input1 < 1 || input1 > 5)
 		{
 			cout << "Select an option form 1-5 :";
-			cin >> input;
+			cin >> input1;
 		}
 		
-		switch(input)
+		switch(input1)
 		{
-		case 1:
-			cout << "working\n";
+		case 0:
 			break;
-		case 6:
+		case 1:
+			cout << "******************************\n"
+				 << "Select Contestant Class\n\n"
+				 << "1) Warrior\n"
+				 << "2) Mage\n"
+				 << "3) Priest\n"
+				 << "******************************\n\n";
+
+			while (input2 < 1 || input2 > 3)
+			{
+				cout << "Select an option form 1-5 :";
+				cin >> input2;
+			}
+
+			cout << "What shall this Contestant be named :";
+			
+			getline(cin,name);
+		
+			if(input2 == 1)
+			{
+				
+			}
+			else if(input2 == 2 || input2 == 3)
+			{
+				
+			}
+			break;
+		case 2:
+
+			break;
+		case 3:
+
+			break;
+		case 4:
+
+			break;
+		case 5:
 			quitGame = true;
 			break;
 
 		}
-		//reset variable for next cycle
-		input = 0;
+		
+		//reset variables and pause for next cycle
+		input1 = 0;
+		input2 = 0;
+		this_thread::sleep_for(1.5s);
 	}
 
 	return 0;
