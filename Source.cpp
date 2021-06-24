@@ -264,13 +264,17 @@ public:
 		{
 			if(type == 'M')
 			{
+				cout << "Mage\n";
 				Mage* newMage = new Mage(name, str, agl, intel, maxHP, dodge, baseDamage);
 				contestantList[numContestants] = newMage;
+			
 			}
 			else if(type == 'P')
 			{
+				cout << "Priest\n";
 				Priest* newPriest = new Priest(name, str, agl, intel, maxHP, dodge, baseDamage);
-				contestantList[numContestants] = newPriest;	
+				contestantList[numContestants] = newPriest;
+				
 			}
 			numContestants++;
 			return true;
@@ -318,7 +322,8 @@ public:
 
 	void simulateChallenge(int contestant1Index, int contestant2Index)
 	{
-
+		cout << "Lets have a better view of our contestants!\n Contestant 1 is : " << contestantList[contestant1Index]->toString() << endl
+			 << "And Contestant 2 is : " << contestantList[contestant2Index]->toString() << endl;
 	}
 };
 
@@ -332,8 +337,6 @@ int main()
 	string name;
 	int str = 0, agil = 0, intel = 0, maxHp = 0, dodge = 0, baseDmg = 0, resist = 0;
 	bool success = false;
-	int index;
-	string read;
 	ArenaManager colosseum(10);
 
 	
@@ -347,7 +350,7 @@ int main()
 	//Run Menu
 	while(!quitGame)
 	{
-		//cout << " Num of Contestants = " << colosseum.numContestants << endl;
+		cout << "Num of Contestants = " << colosseum.getNumContestants() << endl;
 		//cout << " Max of Contestants = " << colosseum.maxContestants << endl;
 		//Display Menu
 		cout << "******************************\n"
@@ -464,7 +467,7 @@ int main()
 				{
 					success = colosseum.addContestant('M', name, str, agil, intel, maxHp, dodge, baseDmg);
 				}
-				else if (input3 == 3)
+				else if (input2 == 3)
 				{
 					success = colosseum.addContestant('P', name, str, agil, intel, maxHp, dodge, baseDmg);
 				}
@@ -501,7 +504,34 @@ int main()
 			break;
 		//Run Combat Challenge
 		case 4:
+			if (colosseum.getNumContestants() > 1)
+			{
+				cout << "******************************\n"
+					<< "Who would you like to battle?\n";
+				cout << colosseum.viewAllContestants();
+				cout << "******************************\n\n";
 
+				while (input2 < 1 || input2 > colosseum.getNumContestants())
+				{
+					cin >> input2;
+				}
+				cout << "Awh Contestant number : " << input2 << ", please make your way to the Arena!\n"
+					<< "Now who will be their challenger!? : ";
+				while (input3 < 1 || input3 > colosseum.getNumContestants())
+				{
+					cin >> input3;
+				}
+				cout << "A battle for the ages! Contestant number : " << input3 << ". Make your way down to the Area!"
+					<< "The Battle will begin momentarily!\n";
+				cout << "******************************\n\n";
+				this_thread::sleep_for(2.0s);
+				colosseum.simulateChallenge(input2, input3);
+			}
+			else
+			{
+				cout << "Not enough challengers have entered the Colosseum. Please recruit more before attempting to run the combat challenge!\n";
+				cout << "******************************\n\n";
+			}
 			break;
 		//Exit
 		case 5:
