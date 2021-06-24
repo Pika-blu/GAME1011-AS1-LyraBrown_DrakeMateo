@@ -260,7 +260,7 @@ public:
 	//For Priest or Mage
 	bool addContestant(char type, string name, int str, int agl, int intel, int maxHP, int dodge, int baseDamage)
 	{
-		if (maxContestants >= numContestants)
+		if (maxContestants > numContestants)
 		{
 			if(type == 'M')
 			{
@@ -288,7 +288,7 @@ public:
 	//For Warrior
 	bool addConestant(string name, int str, int agl, int intel, int maxHP, int dodge, int baseDamage, int resist)
 	{
-		if(numContestants <= maxContestants)
+		if(numContestants < maxContestants)
 		{
 			Warrior* newWarrior = new Warrior(name, str, agl, intel, maxHP, dodge, baseDamage, resist);
 			contestantList[numContestants] = newWarrior;
@@ -347,21 +347,29 @@ public:
 			cout << contestantList[p1]->getName() << contestantList[p1]->getAttack()->description << contestantList[p2]->getName()
 				 << " for : " << contestantList[p1]->getAttack()->damage << " damage!\n"
 			     << contestantList[p2]->getName() << " remaining HP is : " << contestantList[p2]->getPresentHp() << endl;
-
+			this_thread::sleep_for(1.0s);
 			//Check hp and attack player1 
 			if (contestantList[p2]->getPresentHp() > 0)
 			{
 				contestantList[p1]->takeDamage(contestantList[p2]->getAttack()->damage);
 				cout << contestantList[p2]->getName() << contestantList[p2]->getAttack()->description << contestantList[p1]->getName()
-					<< " for : " << contestantList[p2]->getAttack()->damage << " damage!\n"
-					<< contestantList[p1]->getName() << " remaining HP is : " << contestantList[p1]->getPresentHp() << endl;
-
+					 << " for : " << contestantList[p2]->getAttack()->damage << " damage!\n"
+					 << contestantList[p1]->getName() << " remaining HP is : " << contestantList[p1]->getPresentHp() << endl;
+				this_thread::sleep_for(1.0s);
 			}
-
-
-		
+			
 		}
-
+		if (contestantList[contestant1Index]->getPresentHp() <= 0)
+		{
+			cout << contestantList[contestant2Index]->getName();
+		}
+		else
+		{
+			cout << contestantList[contestant1Index]->getName();
+		}
+		cout << "\n******************************\n"
+			 << " is the WINNER !!!\n"
+			 << "******************************\n\n";
 	}
 };
 
@@ -483,9 +491,9 @@ int main()
 				dodge = 1 + rand() % 50;
 				baseDmg = 1 + rand() % 50;
 				resist = 1 + rand() % 50;
-				maxHp = 150 + rand() % 350;
+				maxHp = 100 + rand() % 200;
 				cout << "Strength 1-20 : " << str << endl << "Agility 1-20 : " << agil << endl << "Intelligence 1-20 : " << intel << endl
-					<< "Dodge chance 1-50 : " << dodge << endl << "Base Damage 1-50 : " << baseDmg << endl << "Maximim HealthPoints 150-500 : " << maxHp << endl;
+					<< "Dodge chance 1-50 : " << dodge << endl << "Base Damage 1-50 : " << baseDmg << endl << "Maximum HealthPoints 100-300 : " << maxHp << endl;
 				if (input2 == 1)
 				{
 					cout << "Resistance 1-50 : " << resist << endl;
@@ -575,6 +583,8 @@ int main()
 			break;
 		//Exit
 		case 5:
+			cout << "Off to an adventure? Well there will always be more fighting at the Colosseum when you return!\n";
+			cout << "Till next time!!\n";
 			quitGame = true;
 			break;
 
