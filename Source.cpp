@@ -53,14 +53,14 @@ public:
 
 	virtual AttackInfo * primaryAttack()
 	{
-		AttackInfo * a1 = new AttackInfo (baseDamage, "strikes at");
+		AttackInfo * a1 = new AttackInfo (baseDamage, " strikes at ");
 		return a1;
 		
 	}
 
 	virtual AttackInfo * secondaryAttack()
 	{
-		AttackInfo* a1 = new AttackInfo(baseDamage, "strikes at");
+		AttackInfo* a1 = new AttackInfo(baseDamage, " strikes at ");
 		return a1;
 	}
 
@@ -102,7 +102,7 @@ private:
 public:
 	Warrior(string name, int str, int agi, int intel, int maxHp, int dodge, int baseDam, int resist) : BaseCharacter(name, str, agi, intel, maxHp, dodge, baseDam) {}
 
-	AttackInfo * getAttackInfo()
+	AttackInfo * getAttack()
 	{
 		int roll = rand() % 100 + 1;
 		if (roll <= 90)
@@ -118,7 +118,7 @@ public:
 
 	AttackInfo * primaryAttack()
 	{
-		AttackInfo* p1 = new AttackInfo(baseDamage + baseDamage * (strength / 2), "strikes at");
+		AttackInfo* p1 = new AttackInfo(baseDamage + baseDamage * (strength / 2), " strikes at ");
 		return p1;
 	}
 
@@ -128,7 +128,7 @@ public:
 		{
 			dodgeChance += agility / 2;
 		}
-		AttackInfo* s1 = new AttackInfo(baseDamage = 2, "gets more agile and leaps at");
+		AttackInfo* s1 = new AttackInfo(baseDamage = 2, " gets more agile and leaps at ");
 		return s1;
 	}
 
@@ -161,7 +161,7 @@ class Mage : public BaseCharacter
 public:
 	Mage(string name, int str, int agi, int intel, int maxHp, int dodge, int baseDam) : BaseCharacter(name, str, agi, intel, maxHp, dodge, baseDam) {}
 
-	AttackInfo* getAttackInfo()
+	AttackInfo* getAttack()
 	{
 		int roll = rand() % 100 + 1;
 		if (roll <= 70)
@@ -177,7 +177,7 @@ public:
 
 	AttackInfo* secondaryAttack()
 	{
-		AttackInfo* m1 = new AttackInfo(baseDamage + baseDamage * (intelligence / 20), "throws a fireball");
+		AttackInfo* m1 = new AttackInfo(baseDamage + baseDamage * (intelligence / 20), " throws a fireball ");
 		return m1;
 	}
 	
@@ -200,7 +200,7 @@ class Priest : public BaseCharacter
 public:
 	Priest(string name, int str, int agi, int intel, int maxHp, int dodge, int baseDam) : BaseCharacter(name, str, agi, intel, maxHp, dodge, baseDam) {}
 
-	AttackInfo* getAttackInfo()
+	AttackInfo* getAttack()
 	{
 		int roll = rand() % 100 + 1;
 		if (roll <= 60)
@@ -222,7 +222,7 @@ public:
 			presentHp = maxHp;
 		}
 		
-		AttackInfo* p1 = new AttackInfo(0, "heals themselves and smiles at");
+		AttackInfo* p1 = new AttackInfo(0, " heals themselves and smiles at ");
 		return p1;
 	}
 	
@@ -264,14 +264,14 @@ public:
 		{
 			if(type == 'M')
 			{
-				cout << "Mage\n";
+				//cout << "Mage\n";
 				Mage* newMage = new Mage(name, str, agl, intel, maxHP, dodge, baseDamage);
 				contestantList[numContestants] = newMage;
 			
 			}
 			else if(type == 'P')
 			{
-				cout << "Priest\n";
+				//cout << "Priest\n";
 				Priest* newPriest = new Priest(name, str, agl, intel, maxHP, dodge, baseDamage);
 				contestantList[numContestants] = newPriest;
 				
@@ -316,14 +316,52 @@ public:
 		{
 			s << i+1 << ")" << contestantList[i]->getName() << ". Present Hp : " << contestantList[i]->getPresentHp() << endl  << endl;
 		}
-		cout << "in func\n";
 		return s.str();
 	}
 
 	void simulateChallenge(int contestant1Index, int contestant2Index)
 	{
-		cout << "Lets have a better view of our contestants!\n Contestant 1 is : " << contestantList[contestant1Index]->toString() << endl
-			 << "And Contestant 2 is : " << contestantList[contestant2Index]->toString() << endl;
+		bool initiative;
+		int p1 , p2;
+		
+		cout << "Lets have a better view of our contestants!\n Contestant 1 is : \n" << contestantList[contestant1Index]->toString() << endl
+			 << "And Contestant 2 is : \n" << contestantList[contestant2Index]->toString() << endl;
+
+		while (contestantList[contestant1Index]->getPresentHp() > 0 && contestantList[contestant2Index]->getPresentHp() > 0)
+		{
+			//Roll initiative to decide who attacks first
+			initiative = rand() % 2;
+			//cout << "initiative : " << initiative;
+			if (initiative = 0)
+			{
+				p1 = contestant1Index;
+				p2 = contestant2Index;
+			}
+			else
+			{
+				p1 = contestant2Index;
+				p2 = contestant1Index;
+			}
+			//Player 1 Attacks player 2
+			contestantList[p2]->takeDamage(contestantList[p1]->getAttack()->damage);
+			cout << contestantList[p1]->getName() << contestantList[p1]->getAttack()->description << contestantList[p2]->getName()
+				 << " for : " << contestantList[p1]->getAttack()->damage << " damage!\n"
+			     << contestantList[p2]->getName() << " remaining HP is : " << contestantList[p2]->getPresentHp() << endl;
+
+			//Check hp and attack player1 
+			if (contestantList[p2]->getPresentHp() > 0)
+			{
+				contestantList[p1]->takeDamage(contestantList[p2]->getAttack()->damage);
+				cout << contestantList[p2]->getName() << contestantList[p2]->getAttack()->description << contestantList[p1]->getName()
+					<< " for : " << contestantList[p2]->getAttack()->damage << " damage!\n"
+					<< contestantList[p1]->getName() << " remaining HP is : " << contestantList[p1]->getPresentHp() << endl;
+
+			}
+
+
+		
+		}
+
 	}
 };
 
@@ -350,7 +388,7 @@ int main()
 	//Run Menu
 	while(!quitGame)
 	{
-		cout << "Num of Contestants = " << colosseum.getNumContestants() << endl;
+		//cout << "Num of Contestants = " << colosseum.getNumContestants() << endl;
 		//cout << " Max of Contestants = " << colosseum.maxContestants << endl;
 		//Display Menu
 		cout << "******************************\n"
@@ -429,7 +467,7 @@ int main()
 				cin >> maxHp;
 				cout << "Base Damage : ";
 				cin >> baseDmg;
-				if (input3 == 1)
+				if (input2 == 1)
 				{
 					cout << "Resistance 0-50 : ";
 					cin >> resist;
@@ -439,16 +477,16 @@ int main()
 			//Contestant Random stats 
 			else
 			{
-				str = 1 + rand() % 19;
-				agil = 1 + rand() % 19;
-				intel = 1 + rand() % 19;
-				dodge = 1 + rand() % 49;
-				baseDmg = 1 + rand() % 49;
-				resist = 1 + rand() % 49;
+				str = 1 + rand() % 20;
+				agil = 1 + rand() % 20;
+				intel = 1 + rand() % 20;
+				dodge = 1 + rand() % 50;
+				baseDmg = 1 + rand() % 50;
+				resist = 1 + rand() % 50;
 				maxHp = 150 + rand() % 350;
 				cout << "Strength 1-20 : " << str << endl << "Agility 1-20 : " << agil << endl << "Intelligence 1-20 : " << intel << endl
 					<< "Dodge chance 1-50 : " << dodge << endl << "Base Damage 1-50 : " << baseDmg << endl << "Maximim HealthPoints 150-500 : " << maxHp << endl;
-				if (input3 == 1)
+				if (input2 == 1)
 				{
 					cout << "Resistance 1-50 : " << resist << endl;
 				}
@@ -506,26 +544,28 @@ int main()
 		case 4:
 			if (colosseum.getNumContestants() > 1)
 			{
-				cout << "******************************\n"
-					<< "Who would you like to battle?\n";
+				cout << "******************************\n";	
 				cout << colosseum.viewAllContestants();
 				cout << "******************************\n\n";
-
+				
 				while (input2 < 1 || input2 > colosseum.getNumContestants())
 				{
+					cout << "Who would you like to battle?\n";
 					cin >> input2;
 				}
-				cout << "Awh Contestant number : " << input2 << ", please make your way to the Arena!\n"
-					<< "Now who will be their challenger!? : ";
-				while (input3 < 1 || input3 > colosseum.getNumContestants())
+				
+				while (input3 < 1 || input3 > colosseum.getNumContestants() || input3 == input2)
 				{
+					cout << "Awh Contestant number : " << input2 << ", please make your way to the Arena!\n"
+						<< "Now who will be their challenger!? : ";
 					cin >> input3;
 				}
+				
 				cout << "A battle for the ages! Contestant number : " << input3 << ". Make your way down to the Area!"
 					<< "The Battle will begin momentarily!\n";
 				cout << "******************************\n\n";
 				this_thread::sleep_for(2.0s);
-				colosseum.simulateChallenge(input2, input3);
+				colosseum.simulateChallenge(input2-1, input3-1);
 			}
 			else
 			{
