@@ -300,18 +300,19 @@ public:
 	}
 
 	BaseCharacter viewContestant(int arrayIndex)
-	{
+	
 
+	{
+		cout << contestantList[arrayIndex]->toString();
+	}
+	string viewAllContestants()
+	{
+		
 	}
 
 	void simulateChallenge(int contestant1Index, int contestant2Index)
 	{
 
-	}
-
-	string viewAllContestants()
-	{
-		
 	}
 };
 
@@ -339,11 +340,14 @@ void createContestant(ArenaManager object)
 		cin >> input2;
 
 	}
-	cin.clear();
+	
 	cout << "What shall this Contestant be named : ";
-	/*cin >> name;*/
+
+	cin.get();
 	getline(cin, name);
-	cout << name << ", a name for a worth challenger!\n\n"
+	cin.clear();
+
+	cout << name << ", a name for a worthy challenger!\n\n"
 		<< "Would you like to \n1) Randomize stats\n2) Enter the contestants stats\n";
 
 	while (input3 < 1 || input3 > 2)
@@ -390,13 +394,13 @@ void createContestant(ArenaManager object)
 	//Contestant Random stats 
 	else
 	{
-		str = 1 + rand() % 19;
-		agil = 1 + rand() % 19;
-		intel = 1 + rand() % 19;
-		dodge = 1 + rand() % 49;
+		str     = 1 + rand() % 19;
+		agil    = 1 + rand() % 19;
+		intel   = 1 + rand() % 19;
+		dodge   = 1 + rand() % 49;
 		baseDmg = 1 + rand() % 49;
-		resist = 1 + rand() % 49;
-		maxHp = 150 + rand() % 350;
+		resist  = 1 + rand() % 49;
+		maxHp   = 150 + rand() % 350;
 		cout << "Strength 1-20 : " << str << endl << "Agility 1-20 : " << agil << endl << "Intelligence 1-20 : " << intel << endl
 			<< "Dodge chance 1-50 : " << dodge << endl << "Base Damage 1-50 : " << baseDmg << endl << "Maximim HealthPoints 150-500 : " << maxHp << endl;
 		if (input3 == 1)
@@ -409,7 +413,6 @@ void createContestant(ArenaManager object)
 	//If warrior was chosen
 	if (input2 == 1)
 	{
-
 		success = object.addConestant(name, str, agil, intel, maxHp, dodge, baseDmg, resist);
 	}
 	//If Mage or Priest was chosen 
@@ -441,6 +444,7 @@ int main()
 	srand(time(NULL));
 	bool quitGame = false;
 	int input1 = 0, input2 = 0, input3 = 0;
+	int index;
 	ArenaManager colosseum(10);
 
 	
@@ -478,7 +482,9 @@ int main()
 			break;
 		//View Specific Contestant
 		case 2:
-
+			cout << "******************************\n"
+				<< "Which Contestant would you like to view?\n";
+			/*colosseum.viewContestant(index);*/
 			break;
 		//View All Contestant
 		case 3:
