@@ -262,7 +262,7 @@ public:
 	//For Warrior
 	bool addConestant(string name, int str, int agl, int intel, int maxHP, int dodge, int baseDamage, int resist)
 	{
-		if(maxContestants > numContestants)
+		if(maxContestants >= numContestants)
 		{
 			numContestants++;
 			return 1;
@@ -301,10 +301,10 @@ int main()
 	//Seed and variables needed for main
 	srand(time(NULL));
 	bool quitGame = false;
-	int input1 = 0;
-	int input2 = 0;
+	int input1 = 0, input2 = 0, input3 = 0;
+	
 	string name;
-	int str, agil, intel, maxHp, dodge, baseDmg, resist;
+	int str = 0 , agil = 0 , intel = 0, maxHp = 0, dodge = 0, baseDmg= 0 , resist = 0;
 	ArenaManager colosseum(10);
 
 	//Intro to player
@@ -313,7 +313,7 @@ int main()
 		 << "A world rich with unused lore and a crafting system we forget to maintain over many expansions...\n"
 	     << "Wanna fight something!?\n"
 		 << "******************************\n\n";
-
+	
 	//Run Menu
 	while(!quitGame)
 	{
@@ -335,8 +335,7 @@ int main()
 		
 		switch(input1)
 		{
-		case 0:
-			break;
+		//Add Contestant
 		case 1:
 			cout << "******************************\n"
 				 << "Select Contestant Class\n\n"
@@ -347,32 +346,87 @@ int main()
 
 			while (input2 < 1 || input2 > 3)
 			{
-				cout << "Select an option form 1-5 :";
+				cout << "Select an option form 1-3 :";
 				cin >> input2;
 			}
-
 			cout << "What shall this Contestant be named :";
+			cin >> name;
+			//getline(cin, name);
+			cout << name << ", a name for a worth challenger!\n"
+				 << "Would you like to \n1) Randomize \n2) Enter the contestants stats";
 			
-			getline(cin,name);
-		
-			if(input2 == 1)
+			while (input3 < 1 || input3 > 2)
+			{
+				cout << "Select an option form 1-2 :";
+				cin >> input3;
+			}
+			cout << "******************************\n";
+			//Hard Code Contestant
+			if(input3 == 1)
+			{
+			
+				while(str < 1 || str > 20)
+				{
+					cout << "Strength 1-20 :";
+					cin >> str;
+				}
+				while (agil < 1 || agil > 20)
+				{
+					cout << "Agility 1-20 :";
+					cin >> agil;
+				}
+				while (intel < 1 || intel > 20)
+				{
+					cout << "Intelligence 1-20 :";
+					cin >> intel;
+				}
+				while (dodge < 1 || dodge > 50)
+				{
+					cout << "Dodge Chance 1-50 :";
+					cin >> dodge;
+				}
+				cout << "Maximum HitPoints :";
+				cin  >> maxHp;
+				cout << "Base Damage :";
+				if (input3 == 1)
+				{
+					cout << "Resistance 0-50:";
+					cin >> resist;
+				}
+			
+			}
+			//Contestant Random stats 
+			else
 			{
 				
 			}
+			cout << "******************************\n\n";
+		
+			//If warrior was chosen
+			if(input2 == 1)
+			{
+
+			
+			}
+			//If Mage or Priest was chosen 
 			else if(input2 == 2 || input2 == 3)
 			{
 				
 			}
 			break;
+		//View Specific Contestant
 		case 2:
 
 			break;
+		//View All Contestant
 		case 3:
 
 			break;
+		//Run Combat Challenge
 		case 4:
 
 			break;
+		//Exit
 		case 5:
 			quitGame = true;
 			break;
@@ -380,8 +434,8 @@ int main()
 		}
 		
 		//reset variables and pause for next cycle
-		input1 = 0;
-		input2 = 0;
+		input1 = 0, input2 = 0, input3 = 0;
+		str = 0, agil = 0, intel = 0, maxHp = 0, dodge = 0, baseDmg = 0, resist = 0;
 		this_thread::sleep_for(1.5s);
 	}
 
